@@ -36,7 +36,7 @@ function slurp_input($in, $ar) {
     }
 }
 function maxlength($msg) {
-    $l, $m = -1
+    $l= 0; $m = -1
     $msg | % { 
         $l = $_.length
         if($l -gt $m) { $m = $l }
@@ -46,7 +46,8 @@ function maxlength($msg) {
 
 function construct_balloon($msg, $think) {
     $balloon_lines = @()
-    $thoughts = ""
+    $thoughts = " "
+    if(!$msg) { return $balloon_lines, $thoughts }
 
     $max = maxlength $msg
     $max2 = $max + 2 # border space fudge
@@ -63,8 +64,10 @@ function construct_balloon($msg, $think) {
         $border = '/\\/||'.tochararray()
     }
 
-    $middle, $last = if($msg.length -lt 2) { $null, $null } else {
+    $middle = if($msg.length -lt 3) { $null } else {
         $msg[1..($msg.length-2)] | % { [string]::format($format, $border[4], $_, $border[5]) }
+    }
+    $last = if($msg.length -lt 2) { $null } else {
         [string]::format($format, $border[2], $msg[-1], $border[3])
     }
 
@@ -124,10 +127,12 @@ $young = $opts.y
 $eyes = $opts.e.substring(0, 2)
 $tongue = $opts.T.substring(0, 2)
 
-$message = @(slurp_input $input $args)
+$message = slurp_input $input $args
+if($message -is [string]) {
+    $message = $message.split("`n")
+}
 
-# todo: ensure message is array of strings, wrapped as required
-#       use format-list?
+# todo: wrap
 
 $balloon_lines, $thoughts = construct_balloon $message
 
