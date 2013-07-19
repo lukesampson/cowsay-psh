@@ -94,7 +94,11 @@ function get_cow($f, $path, $vars) {
 }
 
 $version = "3.03";
-$progname = $myInvocation.myCommand.name -replace '\.[^\.]+$', ''
+$progname = $myInvocation.myCommand.name
+if($myInvocation.pscommandpath) {
+    $progname = (split-path $myInvocation.pscommandpath -leaf)
+}
+$progname = $progname -replace '\.[^\.]+$', ''
 $eyes = "oo";
 $tongue = "  ";
 $cowpath = "$psscriptroot\cows"
@@ -134,7 +138,7 @@ if($message -is [string]) {
 
 # todo: wrap
 
-$balloon_lines, $thoughts = construct_balloon $message
+$balloon_lines, $thoughts = construct_balloon $message ($progname -eq 'cowthink')
 
 # construct_face (original sub uses vars from parent scope)
 if ($borg) { $eyes = "==" }
