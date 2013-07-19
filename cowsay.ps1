@@ -143,7 +143,7 @@ $balloon_lines, $thoughts = construct_balloon $message ($progname -eq 'cowthink'
 # construct_face (original sub uses vars from parent scope)
 if ($borg) { $eyes = "==" }
 if ($dead) { $eyes = "xx"; $tongue = "U " }
-if ($greedy) { $eyes = "\$\$" }
+if ($greedy) { $eyes = '$$' }
 if ($paranoid) { $eyes = "@@" }
 if ($stoned) { $eyes = "**"; $tongue = "U " }
 if ($tired) { $eyes = "--" } 
