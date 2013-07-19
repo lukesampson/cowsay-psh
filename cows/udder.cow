@@ -1,0 +1,16 @@
+##
+## The cow from a file called cow-n-horn, artist unknown.
+##
+$eyes, $other_eye = $eyes.tochararray();
+$eyes += " $other_eye";
+$the_cow = @"
+  $thoughts
+   $thoughts    (__)               
+        $eyes\               
+       ('') \---------     
+        $tongue\           \    
+           |          |\   
+           ||---(  )_|| *  
+           ||    UU  ||    
+           ==        ==    
+"@

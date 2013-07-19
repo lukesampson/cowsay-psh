@@ -1,0 +1,10 @@
+##
+## A small cow, artist unknown
+##
+if(!$eyes) { $eyes = ".." }
+$the_cow = @"
+       $thoughts   ,__,
+        $thoughts  ($eyes)____
+           (__)    )\
+            $tongue||--|| *
+"@
