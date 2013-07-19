@@ -1,1 +1,1 @@
-if($myinvocation.expectingInput) { $input | .\cowsay.ps1 $args } else { .\cowsay.ps1 $args }
+if($myinvocation.expectingInput) { $input | .\cowsay.ps1 $args } else { .\cowsay.ps1 @args }
