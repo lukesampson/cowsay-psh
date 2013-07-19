@@ -78,6 +78,18 @@ function construct_balloon($msg, $think) {
     ($balloon_lines | ? { $_ -ne $null }), $thoughts
 }
 
+function get_cow($f, $path, $vars) {
+    if(!$f.endsWith('.cow')) { $f += ".cow" }
+
+    $fpath = "$path\$f"
+    if(!(test-path $fpath)) { "$script:progname: could not find $f cowfile!"; exit 1 }
+    $script = gc -raw $fpath 
+
+    $the_cow = ""
+    iex $script
+    $the_cow
+}
+
 $version = "3.03";
 $progname = $myInvocation.myCommand.name -replace '\.[^\.]+$', ''
 $eyes = "oo";
@@ -113,7 +125,6 @@ $wired = $opts.w
 $young = $opts.y
 $eyes = $opts.e.substring(0, 2)
 $tongue = $opts.T.substring(0, 2)
-$the_cow = "";
 
 $message = @(slurp_input $input $args)
 
@@ -122,4 +133,17 @@ $message = @(slurp_input $input $args)
 
 $balloon_lines, $thoughts = construct_balloon $message
 
+# construct_face (original sub uses vars from parent scope)
+if ($borg) { $eyes = "==" }
+if ($dead) { $eyes = "xx"; $tongue = "U " }
+if ($greedy) { $eyes = "\$\$" }
+if ($paranoid) { $eyes = "@@" }
+if ($stoned) { $eyes = "**"; $tongue = "U " }
+if ($tired) { $eyes = "--" } 
+if ($wired) { $eyes = "OO" } 
+if ($young) { $eyes = ".." }
+
+$the_cow = get_cow $opts.f $cowpath
+
 echo ([string]::join("`n", $balloon_lines))
+echo $the_cow

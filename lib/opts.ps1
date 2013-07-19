@@ -51,5 +51,10 @@ function getopts($a, $str, $defaults) {
         }
     }
 
-    $opts, $a[$i..($a.length-1)]
+    $rem = @()
+    if($i -lt $a.length) {
+        $rem = $a[$i..($a.length-1)]
+    }
+
+    $opts, $rem
 }
