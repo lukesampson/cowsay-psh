@@ -20,6 +20,7 @@ function getopts($a, $str, $defaults) {
     $i = 0;
     for(; $i -lt $a.length; $i++) {
         $arg = $a[$i]
+        if($arg -is [array]) { $arg = [string]::join(', ', $arg)}
         if($arg.startsWith('-')) {
             $flag = $arg[1]
             if(($aflags -ccontains $flag)) {

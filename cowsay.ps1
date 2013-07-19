@@ -95,8 +95,6 @@ $progname = $myInvocation.myCommand.name -replace '\.[^\.]+$', ''
 $eyes = "oo";
 $tongue = "  ";
 $cowpath = "$psscriptroot\cows"
-$message = @();
-$thoughts = "";
 
 $opts = @{
     'e'     =  'oo'
