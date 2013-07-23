@@ -1,1 +1,2 @@
-if($myinvocation.expectingInput) { $input | .\cowsay.ps1 @args } else { .\cowsay.ps1 @args }
+$cowsay = "$psscriptroot\cowsay.ps1"
+if($myinvocation.expectingInput) { $input | & $cowsay @args } else { & $cowsay @args }
