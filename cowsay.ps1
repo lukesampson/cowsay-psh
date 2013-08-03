@@ -73,8 +73,11 @@ function construct_balloon($msg, $think) {
 
     $balloon_lines += 
         " $('-'*$max2) ",
-        [string]::format($format, $border[0], $msg[0], $border[1]),
-        [string]::join("`n", $middle),
+        [string]::format($format, $border[0], $msg[0], $border[1])
+    
+    if($middle) { $balloon_lines += $middle }
+    
+    $balloon_lines +=
         $last,
         " $('-'*$max2) "
 
