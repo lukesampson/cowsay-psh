@@ -18,10 +18,10 @@ Usage: $progname [-bdgpstwy] [-h] [-e eyes] [-f cowfile]
 }
 
 function list_cowfiles($path) {
-    echo "Cow files in $($path -replace [regex]::escape($home), "~") `:"
-    gci $path -filter "*.cow" |
-        sort name |
-        % { "    $($_.name -replace '\.cow$', '')" }
+    Write-Output "Cow files in $($path -replace [regex]::escape($home), "~") `:"
+    Get-ChildItem $path -filter "*.cow" |
+        Sort-Object name |
+        ForEach-Object { "    $($_.name -replace '\.cow$', '')" }
 }
 
 function slurp_input($in, $ar) {
@@ -29,7 +29,7 @@ function slurp_input($in, $ar) {
         $in
     } else {
         if($opts.n) { display_usage; exit 1 }
-        [string]::join(' ', ($ar | % {
+        [string]::join(' ', ($ar | ForEach-Object {
             if($_ -is [array]) { [string]::join(', ', $_ ) }
             else { $_ }
         }) )
@@ -37,7 +37,7 @@ function slurp_input($in, $ar) {
 }
 function maxlength($msg) {
     $l= 0; $m = -1
-    $msg | % { 
+    $msg | ForEach-Object { 
         $l = $_.length
         if($l -gt $m) { $m = $l }
     }
@@ -65,7 +65,7 @@ function construct_balloon($msg, $think) {
     }
 
     $middle = if($msg.length -lt 3) { $null } else {
-        $msg[1..($msg.length-2)] | % { [string]::format($format, $border[4], $_, $border[5]) }
+        $msg[1..($msg.length-2)] | ForEach-Object { [string]::format($format, $border[4], $_, $border[5]) }
     }
     $last = if($msg.length -lt 2) { $null } else {
         [string]::format($format, $border[2], $msg[-1], $border[3])
@@ -81,7 +81,7 @@ function construct_balloon($msg, $think) {
         $last,
         " $('-'*$max2) "
 
-    ($balloon_lines | ? { $_ -ne $null }), $thoughts
+    ($balloon_lines | Where-Object { $_ -ne $null }), $thoughts
 }
 
 function get_cow($f, $path, $vars) {
@@ -89,10 +89,10 @@ function get_cow($f, $path, $vars) {
 
     $fpath = "$path\$f"
     if(!(test-path $fpath)) { "$script:progname: could not find $f cowfile!"; exit 1 }
-    $script = gc -raw $fpath 
+    $script = Get-Content -raw $fpath 
 
     $the_cow = ""
-    iex $script
+    Invoke-Expression $script
     $the_cow
 }
 
@@ -155,5 +155,5 @@ if ($young) { $eyes = ".." }
 
 $the_cow = get_cow $opts.f $cowpath
 
-echo ([string]::join("`n", $balloon_lines))
-echo $the_cow
+Write-Output ([string]::join("`n", $balloon_lines))
+Write-Output $the_cow
